@@ -1,3 +1,7 @@
+# Folders
+raw_data/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -127,3 +131,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# PyCharm Related
+.idea/
+
+# MAC
+.DS_Store
+.vscode/settings.json
