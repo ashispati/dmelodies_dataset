@@ -1,5 +1,7 @@
-# Folders
+# Folders and files
 raw_data/
+datasets/
+dmelodies_dataset_latent_info.csv
 
 
 # Byte-compiled / optimized / DLL files
