@@ -3,7 +3,7 @@
 # dMelodies - Disentanglement testing Melodies dataset
 
 ## Motivation
-Over the last few years, there has been significant research attention on representation learning focused on disentangling the underlying factors of variation in given data. However, most of the current/previous studies rely on datasets from the image/computer vision domain.
+Over the last few years, there has been significant research attention on representation learning focused on disentangling the underlying factors of variation in given data. However, most of the current/previous studies rely on datasets from the image/computer vision domain (such as the [dSprites](https://github.com/deepmind/dsprites-dataset) dataset).
 The purpose of this work is to be able to create a standardized dataset for conducting disentanglement studies on symbolic music data. The key motivation is that such a dataset would help researchers working on disentanglement problems demonstrate their algorithm on diverse domains. 
 
 ## Description
