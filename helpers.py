@@ -84,7 +84,7 @@ def get_latent_info():
         pandas data-frame object
     """
     if os.path.exists(LATENT_INFO_CSV):
-        latent_df = pd.read_csv('dmelodies_dataset_latent_info.csv', index_col=0)
+        latent_df = pd.read_csv('dMelodies_dataset_latent_info.csv', index_col=0)
     else:
         latent_df = create_latent_info_df()
         latent_df.to_csv(path_or_buf=LATENT_INFO_CSV)
@@ -121,7 +121,7 @@ def get_midi_pitch_list(
         if dir_seq[index] == 'down':
             seq = seq[::-1]
         for s in seq:
-            midi_pitch = root_pitch + SCALE_DICT[mode][s]
+            midi_pitch = root_pitch + SCALE_NOTES_DICT[mode][s]
             pitch_seq.append(midi_pitch)
     return pitch_seq
 
