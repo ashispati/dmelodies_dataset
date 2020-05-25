@@ -24,7 +24,7 @@ TICK_VALUES = [
 
 def create_latent_info_df():
     """
-    Creates and returns the dataframe object containing the latent factors information
+    Creates and returns the data-frame object containing the latent factors information
 
     Returns:
          pandas data-frame object

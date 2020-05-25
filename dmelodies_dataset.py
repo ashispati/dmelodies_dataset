@@ -91,12 +91,12 @@ class DMelodiesDataset:
         score_seq = [None] * self.num_data_points
         latent_seq = [None] * self.num_data_points
 
-        def _create_data_point(idx):
-            m21_score = self.get_score_for_item(idx)
+        def _create_data_point(item_index):
+            m21_score = self.get_score_for_item(item_index)
             score_array = self.get_tensor(m21_score)
-            score_seq[idx] = score_array
-            latent_array = self._get_latents_array_for_index(idx)
-            latent_seq[idx] = latent_array
+            score_seq[item_index] = score_array
+            latent_array = self._get_latents_array_for_index(item_index)
+            latent_seq[item_index] = latent_array
 
         for idx in tqdm(range(self.num_data_points)):
             _create_data_point(idx)
@@ -136,29 +136,29 @@ class DMelodiesDataset:
                 self.update_index_dicts(note_name)
 
         # construct sequence
-        j = 0
-        i = 0
+        x = 0
+        y = 0
         length = int(score.highestTime * self.beat_subdivisions)
         t = np.zeros((length, 2))
         is_articulated = True
         num_notes = len(notes)
         current_tick = 0
-        while i < length:
-            if j < num_notes - 1:
-                if notes[j + 1].offset > current_tick + eps:
-                    t[i, :] = [self.note2index_dict[standard_name(notes[j])],
+        while y < length:
+            if x < num_notes - 1:
+                if notes[x + 1].offset > current_tick + eps:
+                    t[y, :] = [self.note2index_dict[standard_name(notes[x])],
                                is_articulated]
-                    i += 1
+                    y += 1
                     current_tick += self.tick_durations[
-                        (i - 1) % len(TICK_VALUES)]
+                        (y - 1) % len(TICK_VALUES)]
                     is_articulated = False
                 else:
-                    j += 1
+                    x += 1
                     is_articulated = True
             else:
-                t[i, :] = [self.note2index_dict[standard_name(notes[j])],
+                t[y, :] = [self.note2index_dict[standard_name(notes[x])],
                            is_articulated]
-                i += 1
+                y += 1
                 is_articulated = False
         lead = t[:, 0] * t[:, 1] + (1 - t[:, 1]) * self.note2index_dict[SLUR_SYMBOL]
         lead = lead.astype('int32')
