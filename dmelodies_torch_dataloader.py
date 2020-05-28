@@ -1,11 +1,24 @@
+"""
+Module containing the dMelodies torch dataloader
+"""
+
 import numpy as np
 import torch
 from torch.utils.data import TensorDataset, DataLoader
+from typing import Tuple
 from dmelodies_dataset import DMelodiesDataset
 
 
 class DMelodiesTorchDataset:
+    """
+    Class defining a torch dataloader for the dMelodies dataset
+    """
     def __init__(self, seed=0):
+        """
+        Initializes the DMelodiesTorchDataset class
+        Args:
+            seed: int, specifies the random seed to be used for shuffling the data
+        """
         self.kwargs = {'pin_memory': True} if torch.cuda.is_available() else {}
         self.dataset = None
         self.seed = seed
@@ -15,6 +28,9 @@ class DMelodiesTorchDataset:
         np.random.seed(seed)
 
     def load_dataset(self):
+        """
+        Loads and shuffles the data
+        """
         dataset = DMelodiesDataset()
         dataset.make_or_load_dataset()
         score = dataset.score_array
@@ -35,13 +51,16 @@ class DMelodiesTorchDataset:
         self.index2note_dict = dataset.index2note_dict
         self.latent_dicts = dataset.latent_dicts
 
-    def data_loaders(self, batch_size, split=(0.70, 0.20)):
+    def data_loaders(
+            self, batch_size, split=(0.70, 0.20)
+    ) -> Tuple[DataLoader, DataLoader, DataLoader]:
         """
-        Returns three data loaders obtained by splitting
-        self.dataset according to split
-        :param batch_size:
-        :param split:
-        :return:
+        Returns three data loaders obtained by splitting the data
+        Args:
+            batch_size: int, number of data points in each batch
+            split: tuple, specify the ratio in which the dataset is to be divided
+        Returns:
+            tuple of 3 DataLoader objects corresponding to the train, validation and test sets
         """
         assert sum(split) < 1
 

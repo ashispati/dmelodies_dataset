@@ -1,5 +1,5 @@
 """
-File containing the DMelodiesDataset class
+Module containing the DMelodiesDataset class
 """
 import os
 from joblib import Parallel, delayed
