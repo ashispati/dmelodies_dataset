@@ -2,9 +2,7 @@
 Module containing the DMelodiesDataset class
 """
 import os
-from joblib import Parallel, delayed
 import json
-import multiprocessing
 import pandas as pd
 from typing import Union
 
@@ -46,7 +44,31 @@ class DMelodiesDataset:
         self.index2note_dict = dict()
         self.initialize_index_dicts()
 
-    def get_score_for_item(self, index):
+    def save(self, index, save_mid=False, save_xml=False):
+        """
+        Saves the score for the index as .mid and / or .musicxml
+        Args:
+            index: int, of the item in the dataset
+            save_mid: bool, save as .mid if True
+            save_xml: bool, save as .musicxml if True
+
+        """
+        if not (save_mid or save_xml):
+            return
+        score = self.get_score_for_item(index)
+        file_name = self.get_file_name_for_item(index)
+        if save_mid:
+            midi_save_path = os.path.join(RAW_DATA_FOLDER, 'midi', file_name + '.mid')
+            if not os.path.exists(os.path.dirname(midi_save_path)):
+                os.makedirs(os.path.dirname(midi_save_path))
+            score.write('midi', midi_save_path)
+        if save_xml:
+            xml_save_path = os.path.join(RAW_DATA_FOLDER, 'musicxml', file_name + '.musicxml')
+            if not os.path.exists(os.path.dirname(xml_save_path)):
+                os.makedirs(os.path.dirname(xml_save_path))
+            score.write('musicxml', xml_save_path)
+
+    def get_score_for_item(self, index) -> music21.stream.Score:
         """
         Returns the score for the index
         Args:
@@ -68,6 +90,29 @@ class DMelodiesDataset:
             arp_dir3=d['arp_chord3'],
             arp_dir4=d['arp_chord4']
         )
+
+    def get_file_name_for_item(self, index) -> str:
+        """
+        Return the file name for index
+        Args:
+            index: int, of the item in the dataset
+
+        Returns:
+            str,
+        """
+        assert 0 <= index < self.num_data_points
+        d = self.df.iloc[index]
+        tonic = d['tonic']
+        octave = d['octave']
+        mode = d['scale']
+        rhythm_bar1 = d['rhythm_bar1']
+        rhythm_bar2 = d['rhythm_bar2']
+        dir1 = d['arp_chord1']
+        dir2 = d['arp_chord2']
+        dir3 = d['arp_chord3']
+        dir4 = d['arp_chord4']
+        file_name = f'{index}_{tonic}_{octave}_{mode}_{rhythm_bar1}_{rhythm_bar2}_{dir1}_{dir2}_{dir3}_{dir4}'
+        return file_name
 
     def make_or_load_dataset(self):
         """
@@ -190,6 +235,7 @@ class DMelodiesDataset:
     def initialize_index_dicts(self):
         """
         Reads index dicts from file if available, else creates it
+
         """
         note_sets = set()
         # add rest and slur symbols
