@@ -181,6 +181,51 @@ def create_m21_melody(
     return score
 
 
+def get_score_for_item(df_row) -> music21.stream.Score:
+    """
+    Returns the score for the index given a data-frame
+    Args:
+        df_row: data-frame row containing latent attribute values
+
+    Returns:
+        music21.stream.Score object
+    """
+    return create_m21_melody(
+        tonic=df_row['tonic'],
+        octave=df_row['octave'],
+        mode=df_row['scale'],
+        rhythm_bar1=df_row['rhythm_bar1'],
+        rhythm_bar2=df_row['rhythm_bar2'],
+        arp_dir1=df_row['arp_chord1'],
+        arp_dir2=df_row['arp_chord2'],
+        arp_dir3=df_row['arp_chord3'],
+        arp_dir4=df_row['arp_chord4']
+    )
+
+
+def get_file_name_for_item(df_row, index) -> str:
+    """
+    Return the file name for index
+    Args:
+        df_row: data-frame row containing latent attribute values
+        index: int, of the item in the dataset
+
+    Returns:
+        str,
+    """
+    tonic = df_row['tonic']
+    octave = df_row['octave']
+    mode = df_row['scale']
+    rhythm_bar1 = df_row['rhythm_bar1']
+    rhythm_bar2 = df_row['rhythm_bar2']
+    dir1 = df_row['arp_chord1']
+    dir2 = df_row['arp_chord2']
+    dir3 = df_row['arp_chord3']
+    dir4 = df_row['arp_chord4']
+    file_name = f'{index}_{tonic}_{octave}_{mode}_{rhythm_bar1}_{rhythm_bar2}_{dir1}_{dir2}_{dir3}_{dir4}'
+    return file_name
+
+
 def compute_tick_durations(tick_values):
     """
     Computes the tick durations

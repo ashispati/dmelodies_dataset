@@ -44,31 +44,7 @@ class DMelodiesDataset:
         self.index2note_dict = dict()
         self.initialize_index_dicts()
 
-    def save(self, index, save_mid=False, save_xml=False):
-        """
-        Saves the score for the index as .mid and / or .musicxml
-        Args:
-            index: int, of the item in the dataset
-            save_mid: bool, save as .mid if True
-            save_xml: bool, save as .musicxml if True
-
-        """
-        if not (save_mid or save_xml):
-            return
-        score = self.get_score_for_item(index)
-        file_name = self.get_file_name_for_item(index)
-        if save_mid:
-            midi_save_path = os.path.join(RAW_DATA_FOLDER, 'midi', file_name + '.mid')
-            if not os.path.exists(os.path.dirname(midi_save_path)):
-                os.makedirs(os.path.dirname(midi_save_path))
-            score.write('midi', midi_save_path)
-        if save_xml:
-            xml_save_path = os.path.join(RAW_DATA_FOLDER, 'musicxml', file_name + '.musicxml')
-            if not os.path.exists(os.path.dirname(xml_save_path)):
-                os.makedirs(os.path.dirname(xml_save_path))
-            score.write('musicxml', xml_save_path)
-
-    def get_score_for_item(self, index) -> music21.stream.Score:
+    def _get_score_for_item(self, index) -> music21.stream.Score:
         """
         Returns the score for the index
         Args:
@@ -79,19 +55,9 @@ class DMelodiesDataset:
         """
         assert 0 <= index < self.num_data_points
         d = self.df.iloc[index]
-        return create_m21_melody(
-            tonic=d['tonic'],
-            octave=d['octave'],
-            mode=d['scale'],
-            rhythm_bar1=d['rhythm_bar1'],
-            rhythm_bar2=d['rhythm_bar2'],
-            arp_dir1=d['arp_chord1'],
-            arp_dir2=d['arp_chord2'],
-            arp_dir3=d['arp_chord3'],
-            arp_dir4=d['arp_chord4']
-        )
+        return get_score_for_item(d)
 
-    def get_file_name_for_item(self, index) -> str:
+    def _get_file_name_for_item(self, index) -> str:
         """
         Return the file name for index
         Args:
@@ -102,17 +68,7 @@ class DMelodiesDataset:
         """
         assert 0 <= index < self.num_data_points
         d = self.df.iloc[index]
-        tonic = d['tonic']
-        octave = d['octave']
-        mode = d['scale']
-        rhythm_bar1 = d['rhythm_bar1']
-        rhythm_bar2 = d['rhythm_bar2']
-        dir1 = d['arp_chord1']
-        dir2 = d['arp_chord2']
-        dir3 = d['arp_chord3']
-        dir4 = d['arp_chord4']
-        file_name = f'{index}_{tonic}_{octave}_{mode}_{rhythm_bar1}_{rhythm_bar2}_{dir1}_{dir2}_{dir3}_{dir4}'
-        return file_name
+        return get_file_name_for_item(d, index)
 
     def make_or_load_dataset(self):
         """
@@ -137,7 +93,7 @@ class DMelodiesDataset:
         latent_seq = [None] * self.num_data_points
 
         def _create_data_point(item_index):
-            m21_score = self.get_score_for_item(item_index)
+            m21_score = self._get_score_for_item(item_index)
             score_array = self.get_tensor(m21_score)
             score_seq[item_index] = score_array
             latent_array = self._get_latents_array_for_index(item_index)
