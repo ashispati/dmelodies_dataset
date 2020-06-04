@@ -1,10 +1,6 @@
 """
 Module containing the DMelodiesDataset class
 """
-import os
-import json
-import pandas as pd
-from typing import Union
 
 from helpers import *
 
@@ -13,7 +9,7 @@ class DMelodiesDataset:
     """
     Class for creating the dMelodies dataset
     """
-    def __init__(self, num_data_points=None):
+    def __init__(self, num_data_points: int = None):
         """
         Initializes the DMelodiesDataset class object
         Args:
@@ -44,7 +40,7 @@ class DMelodiesDataset:
         self.index2note_dict = dict()
         self.initialize_index_dicts()
 
-    def _get_score_for_item(self, index) -> music21.stream.Score:
+    def _get_score_for_item(self, index: int) -> music21.stream.Score:
         """
         Returns the score for the index
         Args:
@@ -57,7 +53,7 @@ class DMelodiesDataset:
         d = self.df.iloc[index]
         return get_score_for_item(d)
 
-    def _get_file_name_for_item(self, index) -> str:
+    def _get_file_name_for_item(self, index: int) -> str:
         """
         Return the file name for index
         Args:
@@ -114,7 +110,7 @@ class DMelodiesDataset:
             latent_dicts=self.latent_dicts,
         )
 
-    def get_tensor(self, score) -> Union[np.array, None]:
+    def get_tensor(self, score: music21.stream.Score) -> Union[np.array, None]:
         """
         Returns the score as a torch tensor
 
@@ -165,7 +161,7 @@ class DMelodiesDataset:
         lead = lead.astype('int32')
         return lead
 
-    def _get_latents_array_for_index(self, index) -> np.array:
+    def _get_latents_array_for_index(self, index: int) -> np.array:
         """
         Returns the latent arrays from the file name
         Args:

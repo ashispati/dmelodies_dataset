@@ -1,6 +1,7 @@
 """
 Helper functions to create melodies and music21 score objects
 """
+
 import os
 from fractions import Fraction
 from itertools import product
@@ -22,7 +23,7 @@ TICK_VALUES = [
 ]
 
 
-def create_latent_info_df():
+def create_latent_info_df() -> pd.DataFrame:
     """
     Creates and returns the data-frame object containing the latent factors information
 
@@ -75,7 +76,7 @@ def create_latent_info_df():
     return latent_df
 
 
-def get_latent_info():
+def get_latent_info() -> pd.DataFrame:
     """
     Reads the latent factors info from stored LATENT_INFO_CSV (see constants_file_names.py) file.
     If file doesn't exist, creates and saves it
@@ -181,7 +182,7 @@ def create_m21_melody(
     return score
 
 
-def get_score_for_item(df_row) -> music21.stream.Score:
+def get_score_for_item(df_row: pd.Series) -> music21.stream.Score:
     """
     Returns the score for the index given a data-frame
     Args:
@@ -203,7 +204,7 @@ def get_score_for_item(df_row) -> music21.stream.Score:
     )
 
 
-def get_file_name_for_item(df_row, index) -> str:
+def get_file_name_for_item(df_row: pd.Series, index: int) -> str:
     """
     Return the file name for index
     Args:
@@ -226,7 +227,7 @@ def get_file_name_for_item(df_row, index) -> str:
     return file_name
 
 
-def compute_tick_durations(tick_values):
+def compute_tick_durations(tick_values: list):
     """
     Computes the tick durations
     Args:
@@ -251,7 +252,7 @@ def get_notes(score: music21.stream.Score) -> list:
     return notes
 
 
-def is_score_on_ticks(score: music21.stream.Score, tick_values) -> bool:
+def is_score_on_ticks(score: music21.stream.Score, tick_values: list) -> bool:
     """
     Checks if the notes in a score are on ticks
     Args:
@@ -271,7 +272,7 @@ def is_score_on_ticks(score: music21.stream.Score, tick_values) -> bool:
     return True
 
 
-def standard_name(note_or_rest) -> str:
+def standard_name(note_or_rest: Union[music21.note.Note, music21.note.Rest]) -> str:
     """
     Converts music21 note objects to string
     Args:
@@ -288,7 +289,7 @@ def standard_name(note_or_rest) -> str:
         raise ValueError("Invalid input. Should be a music21.note.Note or music21.note.Rest object ")
 
 
-def standard_note(note_or_rest_string) -> Union[music21.note.Note, music21.note.Rest]:
+def standard_note(note_or_rest_string: str) -> Union[music21.note.Note, music21.note.Rest]:
     """
     Converts str to music21 note.Note or note.Rest object
     Args:

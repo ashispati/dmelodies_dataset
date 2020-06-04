@@ -13,7 +13,7 @@ class DMelodiesTorchDataset:
     """
     Class defining a torch dataloader for the dMelodies dataset
     """
-    def __init__(self, seed=0):
+    def __init__(self, seed: int = 0):
         """
         Initializes the DMelodiesTorchDataset class
         Args:
@@ -52,7 +52,7 @@ class DMelodiesTorchDataset:
         self.latent_dicts = dataset.latent_dicts
 
     def data_loaders(
-            self, batch_size, split=(0.70, 0.20)
+            self, batch_size: int, split: tuple = (0.70, 0.20)
     ) -> Tuple[DataLoader, DataLoader, DataLoader]:
         """
         Returns three data loaders obtained by splitting the data
