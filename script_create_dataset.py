@@ -8,21 +8,28 @@ Additional Options:
     Add the following arguments while running the script to save the generated melodies
     - '--save-mid': saves all melodies in .mid format
     - '--save-xml': saves all melodies in .musicxml format
+    - '--debug': creates a smaller version of the dataset for debugging
 See constants_file_names for information regarding file names and where they will be saved
 """
 
 import os
 import argparse
 from joblib import Parallel, delayed
+import pandas as pd
 import multiprocessing
 from tqdm import tqdm
 
 from constants_file_names import RAW_DATA_FOLDER
 from dmelodies_dataset import DMelodiesDataset
-from helpers import *
+from helpers import get_score_for_item, get_file_name_for_item
 
 
-def save_(index, data_row, save_mid=False, save_xml=False):
+def save_(
+        index: int,
+        data_row: pd.Series,
+        save_mid: bool = False,
+        save_xml: bool = False
+):
     """
     Saves the score for the index as .mid and / or .musicxml
     Args:
@@ -56,18 +63,29 @@ if __name__ == '__main__':
     parser.add_argument(
         '--save-xml', help='save data points in .mid format (default: false', action='store_true'
     )
+    parser.add_argument(
+        '--debug', help='flag to create a smaller subset for debugging', action='store_true'
+    )
     args = parser.parse_args()
     s_mid = args.save_mid
     s_xml = args.save_xml
+    debug = args.debug
 
     # create and load dataset
-    dataset = DMelodiesDataset(num_data_points=10000)
+    num_data_points=None
+    if debug:
+        num_data_points = 1000
+    dataset = DMelodiesDataset(num_data_points=num_data_points)
     dataset.make_or_load_dataset()
 
     # save raw data-files if needed
     df = dataset.df.head(n=dataset.num_data_points)
-    cpu_count = multiprocessing.cpu_count()
-    print(cpu_count)
-    Parallel(n_jobs=cpu_count)(
-        delayed(save_)(i, d, s_mid, s_xml) for i, d in tqdm(df.iterrows())
-    )
+    if debug:
+        for i, d in tqdm(df.iterrows()):
+            save_(i, d, s_mid, s_xml)
+    else:
+        cpu_count = multiprocessing.cpu_count()
+        print(cpu_count)
+        Parallel(n_jobs=cpu_count)(
+            delayed(save_)(i, d, s_mid, s_xml) for i, d in tqdm(df.iterrows())
+        )
