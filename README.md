@@ -34,7 +34,17 @@ The following factors of variation are considered:
 Consequently, the total number of data-points are 1,354,752.
 
 ## Usage
-TO BE UDPATED
+Install `anaconda` or `miniconda` by following the instruction [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/).
+
+Create a new conda environment using the `enviroment.yml` file located in the root folder of this repository. The instructions for the same can be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file).
+
+To install, either download / clone this repository. Open a new terminal, `cd` into the root folder of this repository and run the following command
+
+    pip install -e .
+
+For creating the dataset (as a `.npz` file), run `script_create_dataset.py` from the root folder of this repository. This will create a `dataset` folder for saving the dataset. Additional arguments `--save-midi` and `--save-xml` can be used to save the individual melodies as `.mid` or `.musicxml` files. The files will be saved in a `raw_data` folder. 
+
+The `DMelodiesDataset` class (see `dmelodies_dataset.py`) is a wrapper around the dataset and provides methods to read and load the dataset. If you are using [PyTorch](https://pytorch.org), you are use the `DMelodiesTorchDataset` class (see `dmelodies_torch_dataloader.py`) which implements a torch DataLoader.
 
 ## Attribution
 TO BE UPDATED
