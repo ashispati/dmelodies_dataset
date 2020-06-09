@@ -38,6 +38,12 @@ Install `anaconda` or `miniconda` by following the instruction [here](https://do
 
 Create a new conda environment using the `enviroment.yml` file located in the root folder of this repository. The instructions for the same can be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file).
 
+Activate the `dmelodies` environment using the following command:
+
+```
+conda activate dmelodies
+```
+
 To install, either download / clone this repository. Open a new terminal, `cd` into the root folder of this repository and run the following command
 
     pip install -e .
