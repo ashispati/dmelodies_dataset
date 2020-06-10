@@ -49,6 +49,7 @@ To install, either download / clone this repository. Open a new terminal, `cd` i
     pip install -e .
 
 For creating the dataset (as a `.npz` file), run `script_create_dataset.py` from the root folder of this repository. This will create a `dataset` folder for saving the dataset. Additional arguments `--save-midi` and `--save-xml` can be used to save the individual melodies as `.mid` or `.musicxml` files. The files will be saved in a `raw_data` folder. 
+**Note**: Saving individual melodies will require around 16.5GB of space (5.5 GB for `.mid` format and 11GB for `.musicxml` format)
 
 The `DMelodiesDataset` class (see `dmelodies_dataset.py`) is a wrapper around the dataset and provides methods to read and load the dataset. If you are using [PyTorch](https://pytorch.org), you are use the `DMelodiesTorchDataset` class (see `dmelodies_torch_dataloader.py`) which implements a torch DataLoader.
 
