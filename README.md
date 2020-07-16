@@ -44,14 +44,23 @@ Activate the `dmelodies` environment using the following command:
 conda activate dmelodies
 ```
 
-To install, either download / clone this repository. Open a new terminal, `cd` into the root folder of this repository and run the following command
-
-    pip install -e .
-
 For creating the dataset (as a `.npz` file), run `script_create_dataset.py` from the root folder of this repository. This will create a `dataset` folder for saving the dataset. Additional arguments `--save-midi` and `--save-xml` can be used to save the individual melodies as `.mid` or `.musicxml` files. The files will be saved in a `raw_data` folder. 
 **Note**: Saving individual melodies will require around 16.5GB of space (5.5 GB for `.mid` format and 11GB for `.musicxml` format)
 
 The `DMelodiesDataset` class (see `dmelodies_dataset.py`) is a wrapper around the dataset and provides methods to read and load the dataset. If you are using [PyTorch](https://pytorch.org), you are use the `DMelodiesTorchDataset` class (see `dmelodies_torch_dataloader.py`) which implements a torch DataLoader.
 
 ## Attribution
-TO BE UPDATED
+This research work is published as a conference paper at ISMIR, 2020.
+
+> Ashis Pati, Siddharth Gururani, Alexander Lerch. "dMelodies: A Music Dataset for Disentanglement Learning", Proc. of the 21st International Society for Music Information Retrieval Conference (ISMIR), Montréal, Canada, 2020.
+
+```
+@inproceedings{pati2019inpainting,
+  title={dMelodies: A Music Dataset for Disentanglement Learning},
+  author={Pati, Ashis and Gururani, Siddharth and Lerch, Alexander},
+  booktitle={Proc. of the 21st International Society for Music Information Retrieval Conference (ISMIR)},
+  year={2020},
+  address={Montréal, Canada}
+}
+```
+Please cite the above publication if you are using the code/data in this repository in any manner.
