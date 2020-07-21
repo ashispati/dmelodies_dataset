@@ -85,7 +85,7 @@ def get_latent_info() -> pd.DataFrame:
         pandas data-frame object
     """
     if os.path.exists(LATENT_INFO_CSV):
-        latent_df = pd.read_csv('dMelodies_dataset_latent_info.csv', index_col=0)
+        latent_df = pd.read_csv(LATENT_INFO_CSV, index_col=0)
     else:
         latent_df = create_latent_info_df()
         latent_df.to_csv(path_or_buf=LATENT_INFO_CSV)
