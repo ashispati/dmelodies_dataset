@@ -55,7 +55,7 @@ This research work is published as a conference paper at ISMIR, 2020.
 > Ashis Pati, Siddharth Gururani, Alexander Lerch. "dMelodies: A Music Dataset for Disentanglement Learning", Proc. of the 21st International Society for Music Information Retrieval Conference (ISMIR), Montréal, Canada, 2020.
 
 ```
-@inproceedings{pati2019inpainting,
+@inproceedings{pati2019dmelodies,
   title={dMelodies: A Music Dataset for Disentanglement Learning},
   author={Pati, Ashis and Gururani, Siddharth and Lerch, Alexander},
   booktitle={Proc. of the 21st International Society for Music Information Retrieval Conference (ISMIR)},
