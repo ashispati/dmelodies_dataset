@@ -9,7 +9,7 @@ The purpose of this work is to be able to create a standardized dataset for cond
 ## Description
 dMelodies is dataset of simple 2-bar melodies generated using 9 independent latent factors of variation where each data point represents a unique melody based on the following constraints:
 - Each melody will correspond to a unique scale (major, minor, blues, etc.).
-- Each melody plays the arpeggios using the standard I-V-IV-I cadence chord pattern.
+- Each melody plays the arpeggios using the standard I-IV-V-I cadence chord pattern.
 - Bar 1 plays the first 2 chords (6 notes), Bar 2 plays the second 2 chords (6 notes).
 - Each played note is an 8th note. 
  
