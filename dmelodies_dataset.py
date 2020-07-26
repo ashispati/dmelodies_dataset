@@ -2,7 +2,10 @@
 Module containing the DMelodiesDataset class
 """
 
+from datetime import date
+
 from helpers import *
+from constant_metadata import *
 
 
 class DMelodiesDataset:
@@ -29,12 +32,17 @@ class DMelodiesDataset:
             os.mkdir(DATASETS_FOLDER)
         self.score_array = None
         self.latent_array = None
+        self.metadata = None
         self.latent_dicts = {
             'tonic': TONIC_DICT,
             'octave': OCTAVE_DICT,
             'scale': SCALE_DICT,
-            'rhythm': RHYTHM_DICT,
-            'arp_dir': ARP_DICT
+            'rhythm_bar1': RHYTHM_DICT,
+            'rhythm_bar2': RHYTHM_DICT,
+            'arp_chord1': ARP_DICT,
+            'arp_chord2': ARP_DICT,
+            'arp_chord3': ARP_DICT,
+            'arp_chord4': ARP_DICT
         }
         self.note2index_dict = dict()
         self.index2note_dict = dict()
@@ -76,11 +84,12 @@ class DMelodiesDataset:
         if os.path.exists(self.dataset_path):
             print('Dataset already created. Reading it now')
             dataset = np.load(self.dataset_path, allow_pickle=True)
-            self.score_array = dataset['score']
-            self.latent_array = dataset['latent_values']
+            self.score_array = dataset['score_array']
+            self.latent_array = dataset['latent_array']
             self.note2index_dict = dataset['note2index_dict'].item()
             self.index2note_dict = dataset['index2note_dict'].item()
             self.latent_dicts = dataset['latent_dicts'].item()
+            self.metadata = dataset['metadata'].item()
             return
 
         # else, create dataset
@@ -101,13 +110,22 @@ class DMelodiesDataset:
         self.score_array = np.array(score_seq)
         self.latent_array = np.array(latent_seq)
         print('Number of data points: ', self.score_array.shape[0])
+        self.metadata = {
+            'title': TITLE,
+            'description': DESCRIPTION,
+            'version': VERSION_NUM,
+            'authors': AUTHORS,
+            'data': date.today().strftime("%B %d, %Y"),
+            'latents_names': tuple([key for key in self.latent_dicts.keys()]),
+        }
         np.savez(
             self.dataset_path,
-            score=score_seq,
-            latent_values=latent_seq,
+            score_array=self.score_array,
+            latent_array=self.latent_array,
             note2index_dict=self.note2index_dict,
             index2note_dict=self.index2note_dict,
             latent_dicts=self.latent_dicts,
+            metadata=self.metadata
         )
 
     def get_tensor(self, score: music21.stream.Score) -> Union[np.array, None]:
@@ -208,3 +226,62 @@ class DMelodiesDataset:
         print(
             f'Warning: Entry {str({new_index: new_note_name})} added to dictionaries'
         )
+
+    def get_score_from_datapoint(self, index):
+        """
+        Converts the given score tensor to a music21 score object
+        Args:
+            index: index of the datapoint
+        Returns:
+            music21 score object
+        """
+        assert 0 <= index < self.num_data_points
+        np_score = self.score_array[index]
+        slur_index = self.note2index_dict[SLUR_SYMBOL]
+        score = music21.stream.Score()
+        part = music21.stream.Part()
+        # LEAD
+        dur = 0
+        f = music21.note.Rest()
+        tensor_lead_np = np_score.flatten()
+        for tick_index, note_index in enumerate(tensor_lead_np):
+            # if it is a played note
+            if not note_index == slur_index:
+                # add previous note
+                if dur > 0:
+                    f.duration = music21.duration.Duration(dur)
+                    part.append(f)
+
+                dur = self.tick_durations[tick_index % self.beat_subdivisions]
+                f = standard_note(self.index2note_dict[note_index])
+            else:
+                dur += self.tick_durations[tick_index % self.beat_subdivisions]
+        # add last note
+        f.duration = music21.duration.Duration(dur)
+        part.append(f)
+        score.insert(part)
+        return score
+
+    def get_latent_values_for_index(self, index):
+        """
+        Returns the latent values for the datapoint specified by the index
+        Args:
+            index: int,
+        Returns:
+            np.array containing the latent values
+
+        """
+        assert 0 <= index < self.num_data_points
+        latents = self.latent_array[index, :]
+        latent_dict = {
+            'tonic': TONIC_DICT[latents[0]],
+            'octave': OCTAVE_DICT[latents[1]],
+            'scale': SCALE_DICT[latents[2]],
+            'rhythm_bar1': RHYTHM_DICT[latents[3]],
+            'rhythm_bar2': RHYTHM_DICT[latents[4]],
+            'arp_chord1': ARP_DICT[latents[5]],
+            'arp_chord2': ARP_DICT[latents[6]],
+            'arp_chord3': ARP_DICT[latents[7]],
+            'arp_chord4': ARP_DICT[latents[8]],
+        }
+        return latent_dict
