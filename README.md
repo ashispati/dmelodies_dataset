@@ -13,7 +13,7 @@ dMelodies is dataset of simple 2-bar melodies generated using 9 independent late
 - Bar 1 plays the first 2 chords (6 notes), Bar 2 plays the second 2 chords (6 notes).
 - Each played note is an 8th note. 
  
-A typical example is shown above. 
+A typical example is shown below. 
 <p align="center">
     <img src=figs/dataset_example.svg width=500px alt="Example melody from the dataset"><br>
 </p>
