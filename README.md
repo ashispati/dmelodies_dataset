@@ -1,6 +1,6 @@
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-ff69b4.svg)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
 
-# dMelodies - Disentanglement testing Melodies dataset
+# dMelodies: A Music Dataset for Disentanglement Learning
 
 ## Motivation
 Over the last few years, there has been significant research attention on representation learning focused on disentangling the underlying factors of variation in given data. However, most of the current/previous studies rely on datasets from the image/computer vision domain (such as the [dSprites](https://github.com/deepmind/dsprites-dataset) dataset).
@@ -58,7 +58,7 @@ This research work is published as a conference paper at ISMIR, 2020.
 @inproceedings{pati2019dmelodies,
   title={dMelodies: A Music Dataset for Disentanglement Learning},
   author={Pati, Ashis and Gururani, Siddharth and Lerch, Alexander},
-  booktitle={Proc. of the 21st International Society for Music Information Retrieval Conference (ISMIR)},
+  booktitle={21st International Society for Music Information Retrieval Conference (ISMIR)},
   year={2020},
   address={Montréal, Canada}
 }
