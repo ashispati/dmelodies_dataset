@@ -231,7 +231,7 @@ class DMelodiesDataset:
         """
         Converts the given score tensor to a music21 score object
         Args:
-            index: index of the datapoint
+            index: int, index of the item in the dataset
         Returns:
             music21 score object
         """
@@ -266,7 +266,7 @@ class DMelodiesDataset:
         """
         Returns the latent values for the datapoint specified by the index
         Args:
-            index: int,
+            index: int, index of the item in the dataset
         Returns:
             np.array containing the latent values
 
