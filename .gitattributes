@@ -1,2 +1,2 @@
 dMelodies_dataset_latent_info.csv filter=lfs diff=lfs merge=lfs -text
-dataset/dMelodies_dataset.npz filter=lfs diff=lfs merge=lfs -text
+data/dMelodies_dataset.npz filter=lfs diff=lfs merge=lfs -text
