@@ -5,7 +5,7 @@ Module containing the DMelodiesDataset class
 from datetime import date
 
 from helpers import *
-from constant_metadata import *
+from constants_metadata import *
 
 
 class DMelodiesDataset:
