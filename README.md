@@ -19,7 +19,7 @@ A typical example is shown below.
 </p>
 
 
-## Factors of Variation
+### Factors of Variation
 The following factors of variation are considered: 
 1. **Tonic** (Root): 12 options from C to B 
 2. **Octave**: 3 options from C4 through C6
@@ -32,6 +32,16 @@ The following factors of variation are considered:
 9. **Arpeggiation Direction Chord 4**: 2 options (up/down)
 
 Consequently, the total number of data-points are 1,354,752.
+
+### Provided Data
+The data is provided as a numpy `.npz` archive with six fields:
+1. `score_array`: (1354752 x 16, int32) tokenized score representation 
+2. `latent_array`: (1354752 x 9, int32) integer index of the latent factor values
+3. `note2index_dict`: dictionary mapping the musical note names/symbols to token indices
+4. `index2note_dict`: dictionary mapping the token indices to musical note names/symbols
+5. `latent_dicts`: dictionary mapping the different latent factor values to the corresponding integer indices
+5. `metadata`: additional information (title, authors, date of creation etc.)
+ 
 
 ## Usage
 Install `anaconda` or `miniconda` by following the instruction [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/).
@@ -48,7 +58,7 @@ Examples for using both can be found in the `dmelodies_loading.ipynb` file.
 
 ### Dataset Creation
 In case you want to create your own version of the dataset (as a `.npz` file), delete the contents of `data` folder and then run `script_create_dataset.py` from the root folder of this repository. Additional arguments `--save-midi` and `--save-xml` can be used to save the individual melodies as `.mid` or `.musicxml` files. The files will be saved in a `raw_data` folder. 
-**Note**: Saving individual melodies will require around 16.5GB of space (5.5 GB for `.mid` format and 11GB for `.musicxml` format)
+**Note**: Saving individual melodies will require approx. 16.5GB of space (5.5 GB for `.mid` format and 11GB for `.musicxml` format)
 
 
 ## Attribution
