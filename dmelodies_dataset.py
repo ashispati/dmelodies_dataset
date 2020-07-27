@@ -227,7 +227,7 @@ class DMelodiesDataset:
             f'Warning: Entry {str({new_index: new_note_name})} added to dictionaries'
         )
 
-    def get_score_from_datapoint(self, index):
+    def get_score_from_datapoint(self, index) -> music21.stream.Score:
         """
         Converts the given score tensor to a music21 score object
         Args:
@@ -262,7 +262,7 @@ class DMelodiesDataset:
         score.insert(part)
         return score
 
-    def get_latent_values_for_index(self, index):
+    def get_latent_values_for_index(self, index) -> dict:
         """
         Returns the latent values for the datapoint specified by the index
         Args:
