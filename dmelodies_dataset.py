@@ -27,9 +27,10 @@ class DMelodiesDataset:
         self.time_sig_den = 4
         self.beat_subdivisions = len(TICK_VALUES)
         self.tick_durations = compute_tick_durations(TICK_VALUES)
-        self.dataset_path = os.path.join(DATASETS_FOLDER, NPZ_DATASET)
-        if not os.path.exists(DATASETS_FOLDER):
-            os.mkdir(DATASETS_FOLDER)
+        cur_dir = os.path.dirname(os.path.realpath(__file__))
+        if not os.path.exists(os.path.join(cur_dir, DATASETS_FOLDER)):
+            os.mkdir(os.path.join(cur_dir, DATASETS_FOLDER))
+        self.dataset_path = os.path.join(cur_dir, DATASETS_FOLDER, NPZ_DATASET)
         self.score_array = None
         self.latent_array = None
         self.metadata = None
