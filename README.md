@@ -4,7 +4,7 @@
 
 This repository contains the dMelodies dataset, meant to explore disentanglement in the context of symbolic music. Please cite as follows if you are using the code/data in this repository in any manner.
 
-> Ashis Pati, Siddharth Gururani, Alexander Lerch. "dMelodies: A Music Dataset for Disentanglement Learning", Proc. of the 21st International Society for Music Information Retrieval Conference (ISMIR), Montréal, Canada, 2020.
+> Ashis Pati, Siddharth Gururani, Alexander Lerch. "dMelodies: A Music Dataset for Disentanglement Learning", 21st International Society for Music Information Retrieval Conference (ISMIR), Montréal, Canada, 2020.
 
 ```
 @inproceedings{pati2019dmelodies,
