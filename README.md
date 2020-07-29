@@ -2,6 +2,21 @@
 
 # dMelodies: A Music Dataset for Disentanglement Learning
 
+This repository contains the dMelodies dataset, meant to explore disentanglement in the context of symbolic music. Please cite as follows if you are using the code/data in this repository in any manner.
+
+> Ashis Pati, Siddharth Gururani, Alexander Lerch. "dMelodies: A Music Dataset for Disentanglement Learning", Proc. of the 21st International Society for Music Information Retrieval Conference (ISMIR), Montréal, Canada, 2020.
+
+```
+@inproceedings{pati2019dmelodies,
+  title={dMelodies: A Music Dataset for Disentanglement Learning},
+  author={Pati, Ashis and Gururani, Siddharth and Lerch, Alexander},
+  booktitle={21st International Society for Music Information Retrieval Conference (ISMIR)},
+  year={2020},
+  address={Montréal, Canada}
+}
+```
+
+
 ## Motivation
 Over the last few years, there has been significant research attention on representation learning focused on disentangling the underlying factors of variation in given data. However, most of the current/previous studies rely on datasets from the image/computer vision domain (such as the [dSprites](https://github.com/deepmind/dsprites-dataset) dataset).
 The purpose of this work is to be able to create a standardized dataset for conducting disentanglement studies on symbolic music data. The key motivation is that such a dataset would help researchers working on disentanglement problems demonstrate their algorithm on diverse domains. 
@@ -60,19 +75,3 @@ Examples for using both can be found in the `dmelodies_loading.ipynb` file.
 In case you want to create your own version of the dataset (as a `.npz` file), delete the contents of `data` folder and then run `script_create_dataset.py` from the root folder of this repository. Additional arguments `--save-midi` and `--save-xml` can be used to save the individual melodies as `.mid` or `.musicxml` files. The files will be saved in a `raw_data` folder. 
 **Note**: Saving individual melodies will require approx. 16.5GB of space (5.5 GB for `.mid` format and 11GB for `.musicxml` format)
 
-
-## Attribution
-This research work is published as a conference paper at ISMIR, 2020.
-
-> Ashis Pati, Siddharth Gururani, Alexander Lerch. "dMelodies: A Music Dataset for Disentanglement Learning", Proc. of the 21st International Society for Music Information Retrieval Conference (ISMIR), Montréal, Canada, 2020.
-
-```
-@inproceedings{pati2019dmelodies,
-  title={dMelodies: A Music Dataset for Disentanglement Learning},
-  author={Pati, Ashis and Gururani, Siddharth and Lerch, Alexander},
-  booktitle={21st International Society for Music Information Retrieval Conference (ISMIR)},
-  year={2020},
-  address={Montréal, Canada}
-}
-```
-Please cite the above publication if you are using the code/data in this repository in any manner.
