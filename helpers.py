@@ -84,11 +84,13 @@ def get_latent_info() -> pd.DataFrame:
     Returns:
         pandas data-frame object
     """
-    if os.path.exists(LATENT_INFO_CSV):
-        latent_df = pd.read_csv(LATENT_INFO_CSV, index_col=0)
+    cur_dir = os.path.dirname(os.path.realpath(__file__))
+    latent_info_path = os.path.join(cur_dir, LATENT_INFO_CSV)
+    if os.path.exists(latent_info_path):
+        latent_df = pd.read_csv(latent_info_path, index_col=0)
     else:
         latent_df = create_latent_info_df()
-        latent_df.to_csv(path_or_buf=LATENT_INFO_CSV)
+        latent_df.to_csv(path_or_buf=latent_info_path)
     return latent_df
 
 
