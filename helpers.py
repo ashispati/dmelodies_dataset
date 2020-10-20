@@ -306,3 +306,23 @@ def standard_note(note_or_rest_string: str) -> Union[music21.note.Note, music21.
         return note.Rest()
     else:
         return note.Note(note_or_rest_string)
+
+
+def concatenate_scores(scores_list):
+    """
+    Each score must 2 bars long
+    :param scores_list:
+    :return:
+    """
+    score = music21.stream.Score()
+    part = music21.stream.Part()
+    dur = 0.0
+    for s in scores_list:
+        notes = get_notes(s)
+        note_dur = 0
+        for n in notes:
+            part.insert(dur + note_dur, n)
+            note_dur += n.duration.quarterLength
+        dur += 8.0
+    score.insert(part)
+    return score
