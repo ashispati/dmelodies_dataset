@@ -118,7 +118,7 @@ class DMelodiesTorchDataset:
         # LEAD
         dur = 0
         f = music21.note.Rest()
-        tensor_lead_np = tensor_score.numpy().flatten()
+        tensor_lead_np = tensor_score.cpu().numpy().flatten()
         tensor_lead_np[tensor_lead_np >= 52] = slur_index
         a = 1
         for tick_index, note_index in enumerate(tensor_lead_np):
