@@ -163,6 +163,8 @@ class DMelodiesTorchDataset:
         :return: music21.note.Note object
         """
         midi_pitch_array,  note_list = self.compute_midi_sequence(tensor_score)
+        if len(note_list) < 3:
+            return None
         min_idx = np.argmin(midi_pitch_array[:3])
         root_note = note_list[min_idx]
         return root_note
@@ -171,7 +173,7 @@ class DMelodiesTorchDataset:
         """
         Returns a numpy array of midi pitch numbers given an input score
         :param tensor_score: tensor_score: pytorch tensor, (16,)
-        :return: np.array, (L,)
+        :return: tuple[np.array, (L,), list[music21.note.Note]]
         """
         # create MIDI pitch sequence
         slur_index = self.note2index_dict[SLUR_SYMBOL]
@@ -197,6 +199,8 @@ class DMelodiesTorchDataset:
         :return: tuple[int, int]
         """
         root_note = self.get_root_note(tensor_score)
+        if root_note is None:
+            return -1, -1
         octave = OCTAVE_REVERSE_DICT[root_note.octave] if root_note.octave in OCTAVE_REVERSE_DICT.keys() else -1
         tonic = TONIC_REVERSE_DICT[root_note.name] if root_note.name in TONIC_REVERSE_DICT.keys() else -1
         return tonic, octave
@@ -208,7 +212,10 @@ class DMelodiesTorchDataset:
         :return: int
         """
         # get midi for root note
-        root_midi = self.get_root_note(tensor_score).pitch.midi
+        root_note = self.get_root_note(tensor_score)
+        if root_note is None:
+            return -1
+        root_midi = root_note.pitch.midi
         # get midi pitch sequence
         midi_pitch_array, _ = self.compute_midi_sequence(tensor_score)
         # create diff array
@@ -266,5 +273,54 @@ class DMelodiesTorchDataset:
                     arp_dir[i] = ARP_REVERSE_DICT['down']
         return tuple(arp_dir)
 
+    def compute_attributes(self, tensor_score):
+        """
+        Computes all attributes for a given input score
+        :param tensor_score: tensor_score: pytorch tensor, (16,)
+        :return: tuple[int, int, int, int, int, int, int, int, int]
+        """
+        # get the midi pitch array
+        midi_pitch_array, note_list = self.compute_midi_sequence(tensor_score)
+        if len(note_list) < 3:
+            return -1, -1, -1, -1, -1, -1, -1, -1, -1
 
+        # estimate root note
+        min_idx = np.argmin(midi_pitch_array[:3])
+        root_note = note_list[min_idx]
 
+        # get tonic and octave
+        octave_idx = OCTAVE_REVERSE_DICT[root_note.octave] if root_note.octave in OCTAVE_REVERSE_DICT.keys() else -1
+        tonic_idx = TONIC_REVERSE_DICT[root_note.name] if root_note.name in TONIC_REVERSE_DICT.keys() else -1
+
+        # estimate mode
+        # create diff array
+        diff_array = (midi_pitch_array - root_note.pitch.midi) % 12
+        # compare diff array
+        mode_idx = -1
+        for mode in SCALE_NOTES_DICT.keys():
+            scale_note_set = set(SCALE_NOTES_DICT[mode])
+            if set(diff_array).issubset(scale_note_set):
+                mode_idx = SCALE_REVERSE_DICT[mode]
+                break
+
+        # estimate rhythm factors
+        rhy1_idx = self.compute_rhythm(tensor_score, bar_num=1)
+        rhy2_idx = self.compute_rhythm(tensor_score, bar_num=2)
+
+        # estimate arpreggiation factors
+        arp_dir = [-1, -1, -1, -1]
+        if midi_pitch_array.size == 12:
+            midi_pitch_array = np.reshape(midi_pitch_array, (4, 3))
+            diff_array = np.sign(np.diff(midi_pitch_array, axis=1))
+            s_array = np.sum(diff_array, axis=1)
+            for i in range(s_array.size):
+                if s_array[i] > 0:
+                    arp_dir[i] = ARP_REVERSE_DICT['up']
+                elif s_array[i] < 0:
+                    arp_dir[i] = ARP_REVERSE_DICT['down']
+        arp1_idx = arp_dir[0]
+        arp2_idx = arp_dir[1]
+        arp3_idx = arp_dir[2]
+        arp4_idx = arp_dir[3]
+
+        return tonic_idx, octave_idx, mode_idx, rhy1_idx, rhy2_idx, arp1_idx, arp2_idx, arp3_idx, arp4_idx
